@@ -135,29 +135,29 @@
 	 auto A = DataType{1.0, 2.0, 3.0};
 	 auto B = DataType{4.0, 5.0, 6.0};
 	 DataType result;
-	 // {
-	 //   auto launch_config =
-	 //       cuda::launch_config_builder().overall_size(1).block_size(256).build();
- 
-	 //   auto A = DataType{1.0, 2.0, 3.0};
-	 //   auto B = DataType{4.0, 5.0, 6.0};
-	 //   DataType result;
-	 //   auto d_result =
-	 //       cuda::memory::make_unique_region(device, 1 * sizeof(DataType));
- 
-	 //   auto sp_result = d_result.as_span<DataType>();
-	 //   stream.enqueue.kernel_launch(vectorAddValue, launch_config, A, B,
-	 //                                sp_result.data());
-	 //   stream.enqueue.copy(h_result, d_result);
-	 //   stream.synchronize();
-	 //   print_result(A, B, result);
-	 // }
 	 {
-	   // Allocate device memory for A, B, and result
+	//    auto launch_config =
+	//        cuda::launch_config_builder().overall_size(1).block_size(256).build();
+ 
+	//    auto A = DataType{1.0, 2.0, 3.0};
+	//    auto B = DataType{4.0, 5.0, 6.0};
+	//    DataType result;
+	//    auto d_result =
+	//        cuda::memory::make_unique_region(device, 1 * sizeof(DataType));
+ 
+	//    auto sp_result = d_result.as_span<DataType>();
+	//    stream.enqueue.kernel_launch(vectorAddValue, launch_config, A, B,
+	//                                 sp_result.data());
+	//    stream.enqueue.copy(h_result, d_result);
+	//    stream.synchronize();
+	//    print_result(A, B, result);
+	 }
+	 {
+	   // notice only the result is passed by pointer, 
+	   // all other arguments are passed by value from host
 	   DataType *d_result;
 	   cudaMalloc((void **)&d_result, sizeof(DataType));
  
-	   // Launch the kernel
 	   vectorAddValue<<<1, 1>>>(A, B, d_result);
 	   cudaDeviceSynchronize();
  
