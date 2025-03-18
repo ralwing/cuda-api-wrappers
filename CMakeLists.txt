@@ -15,6 +15,7 @@ PROJECT(cuda-api-wrappers
 include(GNUInstallDirs)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "lib/")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib/")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(CUDAToolkit 9.0 REQUIRED)
 enable_language(CXX) # required for using Threads
@@ -167,7 +168,7 @@ endif()
 # Examples
 # --------
 
-option(CAW_BUILD_EXAMPLES "Build example programs" OFF)
+option(CAW_BUILD_EXAMPLES "Build example programs" ON)
 
 if (CAW_BUILD_EXAMPLES)
 	add_subdirectory(examples)

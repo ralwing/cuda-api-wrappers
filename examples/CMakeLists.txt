@@ -6,6 +6,7 @@ option(CAW_EXAMPLES_STATIC_DEPS "Have the example programs depend on the static 
 
 enable_language(CXX)
 enable_language(CUDA)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT DEFINED CUDA_ARCH_FLAGS_STR)
 	include(FindCUDA/select_compute_arch)
@@ -25,6 +26,7 @@ endif()
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} ${CUDA_ARCH_FLAGS_STR}")
 
 include(CompileWithWarnings)
+find_package(Eigen3 REQUIRED)
 
 if(MSVC)
 	# MSVC is very problematic! ... lets go easy on it
@@ -38,13 +40,13 @@ if(MSVC)
 	add_compile_definitions("$<$<COMPILE_LANGUAGE:C,CXX>:_CRT_SECURE_NO_WARNINGS>")
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 else()
-	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD 17)
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CUDA_STANDARD 11)
+set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_EXTENSIONS OFF)
 
@@ -68,6 +70,7 @@ if (TARGET CUDA::cublas)
 	target_link_libraries(matrixMulCUBLAS CUDA::cublas${static_suffix})
 endif()
 add_executable(vectorAdd_unique_regions modified_cuda_samples/vectorAdd_unique_regions/vectorAdd_unique_regions.cu)
+target_link_libraries(vectorAdd_unique_regions PUBLIC Eigen3::Eigen)
 add_executable(vectorAddMapped modified_cuda_samples/vectorAddMapped/vectorAddMapped.cu)
 add_executable(vectorAddManaged modified_cuda_samples/vectorAddManaged/vectorAddManaged.cu)
 add_executable(vectorAdd_nvrtc modified_cuda_samples/vectorAdd_nvrtc/vectorAdd_nvrtc.cpp)
